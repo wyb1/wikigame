@@ -5,7 +5,7 @@ pagesvisited = []
 
 
 def findHorJ(url, count):
-	if count > 2:
+	if count > 3:
 		pass
 	else:
 		htmlfile = urllib.urlopen(url)	#opens given wikipage
@@ -15,7 +15,7 @@ def findHorJ(url, count):
 		pagename = getPageName(htmltext)		#gets the name of the page
 		if pagename == 'Adolf Hitler' or pagename == "Jesus" or pagename == "United States":
 			print "You found " + pagename + "!"
-			quit()
+			sys.exit
 		
 		text = getText(htmltext)			#get relevent html text in <p> tags
 		links = getLinks(text)				#gets all the links for text
