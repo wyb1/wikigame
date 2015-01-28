@@ -1,35 +1,45 @@
 import urllib
 import re
+import copy
 
-pagesvisited = []
+#pagesVisited = set([])
 
+def firstTest(url):
+	htmlfile = urllib.urlopen(url)	#opens given wikipage
+	htmltext = htmlfile.read()
+	pagename = getPageName(htmltext)		#gets the name of the page
+	#pagesVisited.add(pagename)
+	if pagename == 'Adolf Hitler' or pagename == "Jesus":
+		print "You found " + pagename + "!"
+		quit()
+	else:
+		findHorJ(url, 0, [])
 
-def findHorJ(url, count):
-	if count > 3:
+#invariant: path contains every page up to current page
+def findHorJ(url, count, path):
+	if count > 5:
 		pass
 	else:
 		htmlfile = urllib.urlopen(url)	#opens given wikipage
 		htmltext = htmlfile.read()		#converts html to a text file
+		pagename = getPageName(htmltext)
+		path.append(pagename)
 
-		
-		pagename = getPageName(htmltext)		#gets the name of the page
-		if pagename == 'Adolf Hitler' or pagename == "Jesus" or pagename == "United States":
-			print "You found " + pagename + "!"
-			sys.exit
-		
 		text = getText(htmltext)			#get relevent html text in <p> tags
 		links = getLinks(text)				#gets all the links for text
 
 		for link in links:
-			if link[0:5] == '/wiki' and not hasVisitedPage(link):#if it is not a citiation 
-				global pagesvisited			
-				pagesvisited.append(link)
-				print "pagename: " + pagename + " link: " +link + " count: " + str(count) 
+			if link[0:5] == '/wiki':#if it is not a citiation 
+				"""print "pagename: " + pagename + " link: " +link + " count: " + str(count) """
 				if link == "/wiki/Adolf_Hitler" or link == "/wiki/Jesus":
 					print "You found " + link[5:]
+					for element in path:
+						print element
+					quit()
 				url = "https://en.wikipedia.org"+link
-				if count < 2:
-					findHorJ(url, count+1)	#recursive call
+				findHorJ(url, count+1, copy.copy(path))	#recursive call
+
+
 
 def hasVisitedPage(link):
 	global pagesvisited
@@ -64,7 +74,8 @@ def getLinks(text):
 def main():
 	#url = "https://en.wikipedia.org/wiki/Nazi_Germany"
 	url = "https://en.wikipedia.org/wiki/Special:Random" #url for a random wikipedia page
-	findHorJ(url, 0)
+	firstTest(url)
+	
 
 if __name__ == '__main__':
 	main()
