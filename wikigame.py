@@ -4,6 +4,7 @@ import copy
 
 #pagesVisited = set([])
 
+
 def firstTest(url):
 	htmlfile = urllib.urlopen(url)	#opens given wikipage
 	htmltext = htmlfile.read()
