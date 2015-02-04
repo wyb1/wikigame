@@ -2,14 +2,11 @@ import urllib
 import re
 import copy
 
-#pagesVisited = set([])
-
-
-def firstTest(url):
+#chekcs corner case that original random page is goal page
+def firstTest(url):		
 	htmlfile = urllib.urlopen(url)	#opens given wikipage
 	htmltext = htmlfile.read()
 	pagename = getPageName(htmltext)		#gets the name of the page
-	#pagesVisited.add(pagename)
 	if pagename == 'Adolf Hitler' or pagename == "Jesus":
 		print "You found " + pagename + "!"
 		quit()
@@ -31,7 +28,7 @@ def findHorJ(url, count, path):
 
 		for link in links:
 			if link[0:5] == '/wiki':#if it is not a citiation 
-				"""print "pagename: " + pagename + " link: " +link + " count: " + str(count) """
+				#print "pagename: " + pagename + " link: " +link + " count: " + str(count) 
 				if link == "/wiki/Adolf_Hitler" or link == "/wiki/Jesus":
 					print "You found " + link[5:]
 					for element in path:
@@ -39,7 +36,6 @@ def findHorJ(url, count, path):
 					quit()
 				url = "https://en.wikipedia.org"+link
 				findHorJ(url, count+1, copy.copy(path))	#recursive call
-
 
 
 def hasVisitedPage(link):
@@ -73,7 +69,6 @@ def getLinks(text):
 
 
 def main():
-	#url = "https://en.wikipedia.org/wiki/Nazi_Germany"
 	url = "https://en.wikipedia.org/wiki/Special:Random" #url for a random wikipedia page
 	firstTest(url)
 	
